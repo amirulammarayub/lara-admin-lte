@@ -18,6 +18,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/', function () {
-    return view('admin_login');
-});
+Route::apiResource('admin', '\App\Http\Controllers\AdminController');
