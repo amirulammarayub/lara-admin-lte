@@ -18,4 +18,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('admin', '\App\Http\Controllers\AdminController');
+Route::get('admin', '\App\Http\Controllers\AdminController@index');

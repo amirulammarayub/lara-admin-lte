@@ -24,3 +24,7 @@ Route::get('/', function () {
 Route::get('/register', function () {
     return view('admin_register');
 });
+
+Route::get('/table', function () {
+    return view('staff_table');
+});
