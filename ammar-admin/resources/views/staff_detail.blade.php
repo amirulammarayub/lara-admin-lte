@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 2 | Log in</title>
+    <title>AdminLTE 2 | Staff Page</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -29,41 +29,61 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 
-<body class="hold-transition login-page">
-    <div class="login-box">
-        <div class="login-logo">
+<body class="hold-transition register-page">
+    <div class="register-box">
+        <div class="register-logo">
             <a href="http://ammar-api.test/api/"><b>Admin</b>LTE</a>
         </div>
-        <!-- /.login-logo -->
-        <div class="login-box-body">
-            <p class="login-box-msg">Sign in to start your session</p>
 
-            <form action="http://ammar-api.test/api/login" method="post">
-                <div class="form-group has-feedback">
-                    <input name="email" type="email" class="form-control" placeholder="Email">
+        <div class="register-box-body">
+            <p class="login-box-msg">Staff Info</p>
+            @php
+                $staffId = $staff['id'];
+                $staffName = $staff['name'];
+                $staffEmail = $staff['email'];
+                $staffPhone = $staff['phone'];
+                $staffAddedBy = $staff['added_by'];
+                $staffJoinDate = $staff['created_at'];
+
+                $staffDeleteLink = "http://ammar-api.test/api/staff/".$staffId."/delete";
+                $staffEditLink = "http://ammar-api.test/api/staff/".$staffId."/edit";
+                $isReadOnly   = true;
+
+            @endphp
+
+            <form action="http://ammar-api.test/api/admin" method="post">
+                <div class="form-group has-feedback"><label >Name</label>
+                    <input type="text" readonly="{{ $isReadOnly }}" class="form-control" value="{{ $staffName }}">
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                </div>
+                <div  class="form-group has-feedback"><label >Email</label>
+                    <input label="Email" readonly="{{ $isReadOnly }}" type="email" class="form-control" value="{{ $staffEmail }}">
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                 </div>
-                <div class="form-group has-feedback">
-                    <input type="password" class="form-control" placeholder="Password">
+                <div class="form-group has-feedback"><label >Phone Number</label>
+                    <input type="text" readonly="{{ $isReadOnly }}" class="form-control" value="{{ $staffPhone }}">
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 </div>
+                <div class="form-group has-feedback"><label >Added By</label>
+                    <input type="text" readonly="true" class="form-control" value="{{ $staffAddedBy }}">
+                    <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback"><label >Join Date</label>
+                    <input type="text" readonly="{{ $isReadOnly }}" class="form-control" value="{{ $staffJoinDate }}">
+                    <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+                </div>
                 <div class="row">
-                    <div class="col-xs-8">
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-xs-4">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
-                    </div>
-                    <!-- /.col -->
                 </div>
             </form>
-            <!-- /.social-auth-links -->
-            <a href="http://ammar-api.test/api/admin/register" class="text-center">Register a new admin</a>
+            <a href={{ $staffEditLink }} class="btn btn-success btn-block btn-flat"> Edit</a>
+            <form action="{{ $staffDeleteLink }}" method="post">
+                <button type="submit" class="btn btn-danger btn-block btn-flat">Delete</button>
+            </form>
 
         </div>
-        <!-- /.login-box-body -->
+        <!-- /.form-box -->
     </div>
-    <!-- /.login-box -->
+    <!-- /.register-box -->
 
     <!-- jQuery 3 -->
     <script src="../../vendor/almasaeed2010/adminltebower_components/jquery/dist/jquery.min.js"></script>

@@ -17,20 +17,35 @@ class Staff extends Authenticatable
     protected $table = 'staffs';
 
     /**
+    * The primary key for the model.
+    *
+    * @var string
+    */
+    protected $primaryKey = 'staff_id';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'staff_admin_id'
+        'staff_name',
+        'staff_email',
+        'staff_password'
     ];
 
     protected $attribute = [
-        'staff_admin_id'=> 0
+        'staff_name'     => '',
+        'staff_email'    => '',
+        'staff_password' => ''
     ];
 
     protected $alias = [
-        'admin_id' => 'staff_admin_id'
+        'id'       => 'staff_id',
+        'name'     => 'staff_name',
+        'email'    => 'staff_email',
+        'phone'    => 'staff_phone',
+        'added_by' => 'staff_added_by'
     ];
 
     /**
@@ -50,8 +65,5 @@ class Staff extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    public function admin()
-    {
-        return $this->belongsTo('App\Admin', 'admin_id', 'staff_admin_id');
-    }
+
 }

@@ -15,10 +15,9 @@ class AdminAndStaff extends Migration
     {
         Schema::create('admins', function (Blueprint $table) {
             $table->id('admin_id');
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('admin_name');
+            $table->string('admin_email')->unique();
+            $table->string('admin_password');
             $table->rememberToken();
             $table->timestamps();
             $table->softdeletes();
@@ -26,14 +25,11 @@ class AdminAndStaff extends Migration
 
         Schema::create('staffs', function (Blueprint $table) {
             $table->id('staff_id');
-            $table->unsignedBigInteger('staff_admin_id');
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->string('staff_name');
+            $table->string('staff_added_by');
+            $table->string('staff_email')->unique();
+            $table->string('staff_phone')->unique();
             $table->timestamps();
-            $table->foreign('staff_admin_id')->references('admin_id')->on('admins');
         });
     }
 
@@ -44,6 +40,7 @@ class AdminAndStaff extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('migrations');
         Schema::dropIfExists('users');
         Schema::dropIfExists('failed_jobs');
         Schema::dropIfExists('admins');
