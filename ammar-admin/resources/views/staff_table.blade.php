@@ -548,9 +548,12 @@
                                         <th>Date Joined</th>
                                     </tr>
                                     @foreach($staffItems as $staffs)
+                                    @php
+                                        $link = $staffs['staff_id'];
+                                    @endphp
                                     <tr>
                                         <td>{{ $staffs['staff_id'] }}</td>
-                                        <td>{{ $staffs['name'] }}</td>
+                                        <td><a href={{ $link }}>{{ $staffs['name'] }}</a></td>
                                         <td>{{ $staffs['created_at'] }}</td>
                                     </tr>
                                     @endforeach

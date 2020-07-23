@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\AdminResource;
+use App\Http\Resources\StaffResource;
 
 use Illuminate\Http\Request;
 
@@ -30,7 +31,15 @@ class adminController extends Controller
 
     public function show($id)
     {
-        return new AdminResource(Admin::findOrFail($id));
+        // dd(new StaffResource(Staff::findOrFail($id)));
+        $staff = \App\Staff::query()->where('staff_id',$id);
+        $resource=new StaffResource($staff);
+        dd($resource);
+        $data['staffs'] = [
+            'name' => $resource->name
+        ];
+        return view('staff_detail')->with($data);
+        return new StaffResource(Staff::findOrFail($id));
     }
 
     public function store(Request $request)
