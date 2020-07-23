@@ -19,3 +19,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('admin', '\App\Http\Controllers\AdminController@index');
+Route::get('admin/register', '\App\Http\Controllers\AdminController@view');

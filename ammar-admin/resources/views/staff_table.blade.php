@@ -539,21 +539,24 @@
                             <!-- /.box-header -->
                             <div class="box-body table-responsive no-padding">
                                 <table class="table table-hover">
+                                    @php
+                                        $staffItems = $staffs['staff_items'];
+                                    @endphp
                                     <tr>
                                         <th>ID</th>
                                         <th>User</th>
-                                        <th>Date</th>
-                                        <th>Status</th>
-                                        <th>Reason</th>
+                                        <th>Date Joined</th>
                                     </tr>
+                                    @foreach($staffItems as $staffs)
                                     <tr>
-                                        <td>{{ $staffs['id'] }}</td>
+                                        <td>{{ $staffs['staff_id'] }}</td>
                                         <td>{{ $staffs['name'] }}</td>
-                                        <td>11-7-2014</td>
-                                        <td><span class="label label-success">Approved</span></td>
-                                        <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                                        <td>{{ $staffs['created_at'] }}</td>
                                     </tr>
+                                    @endforeach
                                 </table>
+                                <a href="register" class="btn"> New Staff</a>
+                                <button type="submit" method="get" href="register">Add New Staff</button>
                             </div>
                             <!-- /.box-body -->
                         </div>

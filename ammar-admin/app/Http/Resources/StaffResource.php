@@ -16,7 +16,7 @@ class StaffResource extends JsonResource
     {
         return [
             'name' => $this->name,
-            'admin_id' => $this->admin_id,
+            'admin_id' => $request->id,
             'email' => $this->email,
             'password' => $this->password,
             'created_at' => $this->created_at,

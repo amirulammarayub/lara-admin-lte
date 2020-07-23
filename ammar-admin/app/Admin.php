@@ -46,6 +46,6 @@ class Admin extends Authenticatable
 
     public function staffs()
     {
-        return $this->hasMany('App\Staff');
+        return $this->hasMany('App\Staff', 'staff_admin_id', 'admin_id');
     }
 }

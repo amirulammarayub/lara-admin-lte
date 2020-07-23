@@ -52,6 +52,6 @@ class Staff extends Authenticatable
     ];
     public function admin()
     {
-        return $this->belongsTo('App\Admin');
+        return $this->belongsTo('App\Admin', 'admin_id', 'staff_admin_id');
     }
 }

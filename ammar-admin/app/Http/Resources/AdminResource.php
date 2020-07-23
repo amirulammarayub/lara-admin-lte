@@ -18,6 +18,8 @@ class AdminResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'password' => $this->password,
+            'staffs' =>  StaffResource::collection($this->whenLoaded('staffs')),
+
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];
