@@ -13,6 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('admin_login');
+});
+
+Route::get('/register', function () {
+    return view('admin_register');
+});
+
+Route::get('/table', function () {
+    return view('staff_table');
 });
