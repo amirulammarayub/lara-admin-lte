@@ -5,77 +5,145 @@ namespace App\Http\Controllers;
 use App\Http\Resources\AdminResource;
 use App\Http\Resources\StaffResource;
 
+use App\Admin;
+use App\Staff;
+
 use Illuminate\Http\Request;
 
 class adminController extends Controller
 {
-    public function index()
+    public function adminLoginPage(Request $request)
     {
-        // $admin = \App\Staff::query()->first();
-        $admin = \App\Admin::query()->with(['staffs'])->first();
-        // $resource = new \App\Http\Resources\StaffResource($admin);
-        $resource = new \App\Http\Resources\AdminResource($admin);
-        $staffs = $resource->staffs;
-        $data['staffs'] = [
-            'id' => $resource->staff_id,
-            'name' => $resource->name,
-            'staff_items' => collect($staffs)
-        ];
-        return view('staff_table')->with($data);
-        // return $resource;
+        return view('admin_login');
     }
 
-    public function view(){
+    public function adminRegisterPage()
+    {
         return view('admin_register');
     }
 
-    public function show($id)
+    public function adminLogin()
     {
-        // dd(new StaffResource(Staff::findOrFail($id)));
-        $staff = \App\Staff::query()->where('staff_id',$id);
-        $resource=new StaffResource($staff);
-        dd($resource);
-        $data['staffs'] = [
-            'name' => $resource->name
+        return $this->staffIndexPage();
+    }
+
+    public function adminCreate(Request $request)
+    {
+        $admin = new Admin;
+
+        \DB::transaction(function () use ($request, $admin) {
+        $admin->admin_name = $request->name;
+        $admin->admin_email = $request->email;
+        $admin->admin_password = $request->password;
+        $admin->save();
+        });
+
+        return view('admin_login');
+    }
+
+    public function staffRegisterPage()
+    {
+        $data['staff']=[
+            'mode' => 'new'
+        ];
+        return view('staff_register')->with($data);
+    }
+
+    public function staffEditPage($id)
+    {
+        $staff = Staff::find($id);
+
+        if(!$staff)
+            $this->adminLogin();
+
+        $resource = new StaffResource($staff);
+
+        $data['staff'] = [
+            'id' => $resource->staff_id,
+            'name' => $resource->staff_name,
+            'email' => $resource->staff_email,
+            'phone' => $resource->staff_phone,
+            'added_by' => $resource->staff_added_by,
+            'created_at' => $resource->created_at,
+            'mode' => 'edit',
+        ];
+        return view('staff_update')->with($data);
+    }
+
+    public function staffIndexPage()
+    {
+        $staffs= Staff::all();
+        $resource = new StaffResource($staffs);
+
+        $data['staffs'] = $resource;
+
+        return view('staff_table')->with($data);
+    }
+
+    public function staffCreate(Request $request)
+    {
+        $staff = new staff;
+
+        \DB::transaction(function () use ($request, $staff) {
+            $staff->staff_name     = $request->name;
+            $staff->staff_email    = $request->email;
+            $staff->staff_phone    = $request->phone;
+            $staff->staff_added_by = $request->admin_name;
+            $staff->save();
+        });
+
+        return $this->staffIndexPage();
+    }
+
+    public function staffShow($id)
+    {
+        $staff = Staff::find($id);
+
+        if(!$staff)
+            return $this->staffIndexPage();
+
+        $resource = new StaffResource($staff);
+        $data['staff'] = [
+            'id'         => $resource->staff_id,
+            'name'       => $resource->staff_name,
+            'email'      => $resource->staff_email,
+            'phone'      => $resource->staff_phone,
+            'added_by'   => $resource->staff_added_by,
+            'created_at' => $resource->created_at
+
         ];
         return view('staff_detail')->with($data);
-        return new StaffResource(Staff::findOrFail($id));
     }
 
-    public function store(Request $request)
+    public function staffUpdate(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required|max:255',
-        ]);
+        $staff = Staff::find($id);
 
-        $admin = Admin::create($request->all());
+        \DB::transaction(function () use ($request, $staff) {
+            $staff->staff_name = $request->name;
+            $staff->staff_email = $request->email;
+            $staff->staff_phone = $request->phone;
+            $staff->staff_added_by = $request->admin_name;
+            $staff->save();
+        });
 
-        return (new AdminResource($admin))
-            ->response()
-            ->setStatusCode(201);
+        $staffs= Staff::all();
+        $resource = new StaffResource($staffs);
+
+        $data['staffs'] = $resource;
+
+        return view('staff_table')->with($data);
+
     }
 
-    // public function update($id)
-    // {
-    //     $request->validate([
-    //         'name' => 'required|max:255',
-    //     ]);
-
-    //     $admin = admin::create($request->all());
-
-    //     return (new adminResource($admin))
-    //         ->response()
-    //         ->setStatusCode(201);
-    // }
-
-    public function delete($id)
+    public function staffDelete($id)
     {
-        $admin = admin::findOrFail($id);
-        $admin->delete();
+        $staff = Staff::find($id);
+        if(!$staff)
+            $this->adminLogin();
+        else
+            $staff->delete();
 
-        return response()->json(null, 204);
+        return $this->adminLogin();
     }
-
-
-    //
 }

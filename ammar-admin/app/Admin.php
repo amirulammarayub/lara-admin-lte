@@ -18,12 +18,34 @@ class Admin extends Authenticatable
     protected $table = 'admins';
 
     /**
+    * The primary key for the model.
+    *
+    * @var string
+    */
+    protected $primaryKey = 'admin_id';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'email',
+        'password',
+    ];
+
+    protected $attribute = [
+    'admin_name'     => '',
+    'admin_email'    => '',
+    'admin_password' => ''
+    ];
+
+    protected $alias = [
+    'id'       => 'admin_id',
+    'name'     => 'admin_name',
+    'email'    => 'admin_email',
+    'password' => 'admin_password'
     ];
 
     /**
@@ -32,7 +54,8 @@ class Admin extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     /**
@@ -44,8 +67,4 @@ class Admin extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function staffs()
-    {
-        return $this->hasMany('App\Staff', 'staff_admin_id', 'admin_id');
-    }
 }
